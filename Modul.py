@@ -2,7 +2,8 @@
 
 class Modul:
 
-    def __init__(self, acronym, title, exam_format, image, status="Offen"):
+    def __init__(self, modul_id, acronym, title, exam_format, image, status="Offen"):
+        self.modul_id = modul_id
         self.acronym = acronym
         self.title = title
         self.exam_format = exam_format
