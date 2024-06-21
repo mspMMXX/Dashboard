@@ -4,6 +4,7 @@ from Modul import Modul
 
 def initialize_moduls():
     module = [
+        # Module müssen noch richtig hinzugefügt werden!!!
         Modul(1, "Test1", "Java", "Klausur", "Bild1"),
         Modul(2, "Test2", "Python", "Portfolio", "Bild2"),
         Modul(2, "Test3", "Swift", "Projektbericht", "Bild3")
@@ -14,13 +15,14 @@ def initialize_moduls():
 class Study:
 
     COURSE_OF_STUDY = "Softwareentwicklung"
+    modul_list = []
 
     def __init__(self, study_duration, study_start_date):
         self.study_duration = study_duration
         self.study_start_date = study_start_date
         self.graduation_date = self.set_graduation_date()
         self.calculated_graduation_date = self.set_calculated_graduation_date()
-        self.calculated_graduation_date_color = self.set_calculated_graduation_date_color()
+        self.calculated_graduation_date_is_before_graduation_date = self.set_calculated_graduation_date_color()
         self.modul_list = initialize_moduls()
 
     def set_graduation_date(self):
