@@ -2,28 +2,19 @@ import datetime as dt
 from Modul import Modul
 
 
-def initialize_moduls():
-    module = [
-        # Module müssen noch richtig hinzugefügt werden!!!
-        Modul(1, "Test1", "Java", "Klausur", "Bild1"),
-        Modul(2, "Test2", "Python", "Portfolio", "Bild2"),
-        Modul(2, "Test3", "Swift", "Projektbericht", "Bild3")
-    ]
-    return module
-
-
 class Study:
 
     COURSE_OF_STUDY = "Softwareentwicklung"
-    modul_list = []
 
     def __init__(self, study_duration, study_start_date):
         self.study_duration = study_duration
         self.study_start_date = study_start_date
         self.graduation_date = self.set_graduation_date()
-        self.calculated_graduation_date = self.set_calculated_graduation_date()
-        self.calculated_graduation_date_is_before_graduation_date = self.set_calculated_graduation_date_color()
-        self.modul_list = initialize_moduls()
+        self.calculated_graduation_date = self.calculate_graduationdate()
+        self.modul_list = []
+        self.initialize_moduls()
+        self.calculated_graduation_date_is_before_graduation_date = (
+            self.calculate_graduation_date_is_before_graduation_date())
 
     def set_graduation_date(self):
         return self.study_start_date.replace(year=self.study_start_date + self.study_duration)
@@ -33,7 +24,9 @@ class Study:
         if self.study_duration is not None:
             self.graduation_date = self.study_start_date.replace(year=self.study_start_date + self.study_duration)
 
-    def set_calculated_graduation_date(self):
+    # Methode zum errechnen des voraussichtlichen Abschlussdatums. Berechnet auf die durchschnittliche
+    # Bearbeitungsdauer der Module
+    def calculate_graduationdate(self):
         sum_modul_time = 0
         sum_completed_moduls = 0
         for modul in self.modul_list:
@@ -47,8 +40,19 @@ class Study:
         else:
             return "Noch kein Modul abgeschlossen"
 
-    def set_calculated_graduation_date_color(self):
-        if self.graduation_date >= self.set_calculated_graduation_date():
+    # Berechnet ob das voraussichtlich errechnete Abschlussdatum vor oder am selben Tag wie das Abschlussdatum ist
+    def calculate_graduation_date_is_before_graduation_date(self):
+        if self.graduation_date >= self.calculate_graduationdate():
             return True
         else:
             return False
+
+    # Methode zur erstellung von Modulen. Diese werden dann gleich der Liste hinzugefügt
+    def add_modul(self, modul_id, acronym, title, exam_format, image):
+        modul = Modul(modul_id, acronym, title, exam_format, image)
+        self.modul_list.append(modul)
+
+    # Mit dieser Mehtode werden alle Module des Studiengangs Softwareentwicklung angelegt und im Konstruktor aufgerufen
+    def initialize_moduls(self):
+        self.add_modul(1, "Test", "Titel", "Klausur", "Bild")
+
