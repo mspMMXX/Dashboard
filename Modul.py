@@ -1,3 +1,6 @@
+from Student import Student
+from Study import Study
+from datetime import datetime, timedelta
 
 
 class Modul:
@@ -9,36 +12,38 @@ class Modul:
         self.exam_format = exam_format
         self.image = image
         self.status = "Offen"
-        self.start_date = None
+        self.start_date = self.set_start_date()
         self.end_date = None
-        self.deadline = None
+        self.deadline = self.set_deadline()
         self.exam_date = None
         self.grade = None
-
-    def set_start_date(self, start_date):
-        self.start_date = start_date
-
-    def set_end_date(self, end_date):
-        self.end_date = end_date
-
-    def set_deadline(self, deadline):
-        self.deadline = deadline
-
-    def set_exam_date(self, exam_date):
-        self.exam_date = exam_date
-
-    def set_grade(self, grade):
-        self.grade = grade
+        self.student = Student
+        self.study = Study
 
     def set_status(self, status):
         self.status = status
 
-    def __str__(self):
-        return f"{self.acronym}, {self.title}, {self.exam_format}, {self.image}, {self.status}, {self.start_date}, {self.end_date}, {self.deadline}, {self.exam_date}, {self.grade}"
+    def set_start_date(self):
+        if self.status is "In Bearbeitung":
+            return datetime.now()
+        else:
+            return None
 
-    def calculate_deadline(self):
-        pass
+    def set_end_date(self, end_date):
+        self.end_date = end_date
 
+    def set_deadline(self):
+        time_for_modul = self.study.study_duration * 365 / 36
+        if self.start_date:
+            deadline_date = self.start_date + timedelta(days=time_for_modul)
+            return deadline_date
+        else:
+            return None
 
-modul1 = Modul("DIELSDK_1", "Python", "Klausur", "Image", "In Bearbeitung")
-print(modul1.acronym)
+    def set_exam_date(self, exam_date):
+        self.exam_date = exam_date
+        if self.student:
+            self.student.create_and_add_exam_schedule(self.title, exam_date)
+
+    def set_grade(self, grade):
+        self.grade = grade
