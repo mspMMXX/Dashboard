@@ -45,5 +45,7 @@ class Study:
     # Anlegen aller Module des Studiengangs Softwareentwicklung
     def initialize_moduls(self):
         self.modul_list = {
-            1: Modul(1, "BLABLA", "Titel", "Klausur", "image")
+            1: Modul(1, "BLABLA", "Titel", "Klausur", "/Users/msp/Dropbox/07_IU"
+                                                      "/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                                      "01_Code/Dashboard/Images/Data_Science.png")
         }

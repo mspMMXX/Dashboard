@@ -9,7 +9,7 @@ class Modul:
         self.acronym = acronym
         self.title = title
         self.exam_format = exam_format
-        self.image = image
+        self.image_path = image
         self.status = "Offen"
         self.start_date = self.set_start_date()
         self.end_date = None
