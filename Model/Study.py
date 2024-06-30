@@ -1,5 +1,5 @@
 import datetime as dt
-from Modul import Modul
+from .Modul import Modul
 
 
 class Study:
@@ -25,7 +25,7 @@ class Study:
         sum_modul_time = 0
         sum_completed_moduls = 0
         for modul in self.modul_list:
-            if modul.status is "Abgeschlossen":
+            if modul.status == "Abgeschlossen":
                 modul_time = (modul.end_date - modul.start_date).days
                 sum_modul_time += modul_time
                 sum_completed_moduls += 1

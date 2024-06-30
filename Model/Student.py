@@ -1,7 +1,7 @@
-from Study import Study
-from AvgGrade import AvgGrade
-from Schedule import Schedule
-from ExamSchedule import ExamSchedule
+from .Study import Study
+from .AvgGrade import AvgGrade
+from .Schedule import Schedule
+from .ExamSchedule import ExamSchedule
 
 
 # Singelton Klasse, da nur eine Instanz existieren soll und in anderen Klassen auf die seleben Attributwerte
@@ -12,7 +12,7 @@ class Student:
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(Student, cls).__new__(cls)
-            return cls._instance
+        return cls._instance
 
     def __init__(self, last_name=None, first_name=None, student_number=None, study_duration=None,
                  study_start_date=None, planned_avg_grade=None):
@@ -24,6 +24,7 @@ class Student:
             self.student_moduls = self.study.modul_list
             self.avg_grade = AvgGrade(planned_avg_grade, self.student_moduls)
             self.schedule_list = []
+            self.initialized = True
 
     # Aktualisiert die Werte des Moduls
     def update_modul(self, modul_id, status=None, end_date=None, exam_date=None, grade=None):

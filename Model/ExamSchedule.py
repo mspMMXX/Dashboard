@@ -1,4 +1,4 @@
-from Schedule import Schedule
+from .Schedule import Schedule
 
 
 # Kind von Schedule
@@ -10,4 +10,3 @@ class ExamSchedule(Schedule):
             self.exam_schedule_color = "red"
         else:
             self.exam_schedule_color = exam_schedule_color
-
