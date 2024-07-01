@@ -19,9 +19,34 @@ class DashboardView:
         center_frame.pack(side="left", expand=True, fill="both")
         right_frame.pack(side="right", fill="y")
 
-        modules = self.controller.get_modules()
-        for modul in modules:
-            ModulElement(left_frame, modul)
+        canvas = tk.Canvas(left_frame, background="#87CEEB", width=496.6)
+        scrollbar = tk.Scrollbar(left_frame, orient="vertical", command=canvas.yview)
+        self.scrollable_frame = tk.Frame(canvas, background="#87CEEB", width=496.6)
+
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            )
+        )
+
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="n")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+
+        self.modules = self.controller.get_modules()
+        self.module_index = 0
+        self.create_module_elements()
+
+    def create_module_elements(self):
+        if self.module_index < len(self.modules):
+            modul = self.modules[self.module_index]
+            print(f"Zeige ModulElement: {modul.acronym}, {modul.title}")
+            ModulElement(self.scrollable_frame, modul)
+            self.module_index += 1
+            self.root.after(100, self.create_module_elements)
 
     def run(self):
         self.root.mainloop()

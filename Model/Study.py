@@ -1,5 +1,5 @@
 import datetime as dt
-from .Modul import Modul
+from Model.Modul import Modul
 
 
 class Study:
@@ -45,5 +45,11 @@ class Study:
     def initialize_moduls(self):
         self.modul_list = {
             1: Modul(1, "DLBDSIDS01_D", "Einführung in Data Science",
-                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/Dashboard/Images/Data_Science.png")
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            2: Modul(2, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen")
         }

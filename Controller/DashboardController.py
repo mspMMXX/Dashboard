@@ -8,4 +8,4 @@ class DashboardController:
         self.study = Study(3, dt.date(2024, 1, 5))
 
     def get_modules(self):
-        return self.study.modul_list.values()
+        return list(self.study.modul_list.values())

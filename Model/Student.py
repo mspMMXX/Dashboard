@@ -1,9 +1,3 @@
-from .Study import Study
-from .AvgGrade import AvgGrade
-from .Schedule import Schedule
-from .ExamSchedule import ExamSchedule
-
-
 # Singelton Klasse, da nur eine Instanz existieren soll und in anderen Klassen auf die seleben Attributwerte
 # zugegriffen werden kann.
 class Student:
@@ -17,6 +11,8 @@ class Student:
     def __init__(self, last_name=None, first_name=None, student_number=None, study_duration=None,
                  study_start_date=None, planned_avg_grade=None):
         if not hasattr(self, "initialized"):
+            from Model.Study import Study
+            from Model.AvgGrade import AvgGrade
             self.last_name = last_name
             self.first_name = first_name
             self.student_number = student_number
@@ -35,11 +31,13 @@ class Student:
 
     # Erstellt ein Termin und fügt ihn zur Liste hinzu
     def create_and_add_schedule(self, schedule_title, schedule_date):
+        from Model.Schedule import Schedule
         schedule = Schedule(schedule_title, schedule_date)
         self.schedule_list.append(schedule)
 
     # Erstellt ein Klasusurtermin und fügt ihn zur Liste hinzu
     def create_and_add_exam_schedule(self, exam_schedule_title, exam_schedule_date):
+        from Model.ExamSchedule import ExamSchedule
         exam_schedule = ExamSchedule(exam_schedule_title, exam_schedule_date, None)
         self.schedule_list.append(exam_schedule)
 
