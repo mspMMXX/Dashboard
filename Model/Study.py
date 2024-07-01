@@ -51,5 +51,142 @@ class Study:
             2: Modul(2, "DLBDSIDS02_D", "Einführung in Data",
                      "Klausur",
                      image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
-                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen")
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            3: Modul(3, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            4: Modul(4, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            5: Modul(5, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            6: Modul(6, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            7: Modul(7, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            8: Modul(8, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            9: Modul(9, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            10: Modul(10, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            11: Modul(11, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            12: Modul(12, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            13: Modul(13, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            14: Modul(14, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            15: Modul(1, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            16: Modul(16, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            17: Modul(17, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            18: Modul(18, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            19: Modul(19, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            20: Modul(20, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            21: Modul(21, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            22: Modul(22, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            23: Modul(23, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            24: Modul(24, "DLBDSIDS02_D", "Einführung in Data",
+                     "Klausur",
+                     image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            25: Modul(25, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                    "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                    "Dashboard/Images/Data_Science.png", status="Offen"),
+            26: Modul(26, "DLBDSIDS02_D", "Einführung in Data",
+                      "Klausur",
+                      image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                 "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            27: Modul(27, "DLBDSIDS01_D", "Einführung in Data Science",
+                      "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                     "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                     "Dashboard/Images/Data_Science.png", status="Offen"),
+            28: Modul(28, "DLBDSIDS02_D", "Einführung in Data",
+                      "Klausur",
+                      image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                 "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            29: Modul(29, "DLBDSIDS01_D", "Einführung in Data Science",
+                      "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                     "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                     "Dashboard/Images/Data_Science.png", status="Offen"),
+            30: Modul(30, "DLBDSIDS02_D", "Einführung in Data",
+                      "Klausur",
+                      image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                 "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            31: Modul(31, "DLBDSIDS01_D", "Einführung in Data Science",
+                      "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                     "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                     "Dashboard/Images/Data_Science.png", status="Offen"),
+            32: Modul(32, "DLBDSIDS02_D", "Einführung in Data",
+                      "Klausur",
+                      image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                 "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            33: Modul(33, "DLBDSIDS01_D", "Einführung in Data Science",
+                      "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                     "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                     "Dashboard/Images/Data_Science.png", status="Offen"),
+            34: Modul(34, "DLBDSIDS02_D", "Einführung in Data",
+                      "Klausur",
+                      image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                 "01_Code/Dashboard/Images/Data_Science.png", status="Offen"),
+            35: Modul(35, "DLBDSIDS01_D", "Einführung in Data Science",
+                      "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/"
+                                                     "11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
+                                                     "Dashboard/Images/Data_Science.png", status="Offen"),
+            36: Modul(36, "DLBDSIDS02_D", "Einführung in Data",
+                      "Klausur",
+                      image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
+                                 "01_Code/Dashboard/Images/Data_Science.png", status="Offen")
+
         }

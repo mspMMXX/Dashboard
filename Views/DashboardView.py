@@ -1,5 +1,6 @@
 import tkinter as tk
 from ViewElements.ModulElement import ModulElement
+from ViewElements.ScheduleElement import ScheduleElement
 from Controller.DashboardController import DashboardController
 
 
@@ -11,17 +12,18 @@ class DashboardView:
         self.root.title = "IU Dashboard"
         self.root.geometry("1490x950")
 
-        left_frame = tk.Frame(self.root, background="#B0C4DE", width=496.6)
-        center_frame = tk.Frame(self.root, background="#87CEEB", width=496.6)
-        right_frame = tk.Frame(self.root, background="#B0C4DE", width=496.6)
+        left_frame = tk.Frame(self.root, width=496.6)
+        center_frame = tk.Frame(self.root, width=496.6)
+        right_frame = tk.Frame(self.root, width=496.6)
 
         left_frame.pack(side="left", fill="y")
         center_frame.pack(side="left", expand=True, fill="both")
         right_frame.pack(side="right", fill="y")
 
-        canvas = tk.Canvas(left_frame, background="#87CEEB", width=496.6)
+        # left_frame: Scrollbar mit Modulen
+        canvas = tk.Canvas(left_frame, width=496.6)
         scrollbar = tk.Scrollbar(left_frame, orient="vertical", command=canvas.yview)
-        self.scrollable_frame = tk.Frame(canvas, background="#87CEEB", width=496.6)
+        self.scrollable_frame = tk.Frame(canvas, width=496.6)
 
         self.scrollable_frame.bind(
             "<Configure>",
@@ -40,13 +42,39 @@ class DashboardView:
         self.module_index = 0
         self.create_module_elements()
 
+        # center_frame: Termine
+        canvas_c = tk.Canvas(center_frame, width=496.6)
+        scrollbar_c = tk.Scrollbar(center_frame, orient="vertical", command=canvas_c.yview)
+        self.scrollable_frame_c = tk.Frame(canvas_c, width=496.6)
+
+        self.scrollable_frame_c.bind(
+            "<Configure>",
+            lambda e: canvas_c.configure(
+                scrollregion=canvas_c.bbox("all")
+            )
+        )
+
+        canvas_c.create_window((0, 0), window=self.scrollable_frame_c, anchor="n")
+        canvas_c.configure(yscrollcommand=scrollbar_c.set)
+
+        canvas_c.pack(side="left", fill="both", expand=True)
+        scrollbar_c.pack(side="right", fill="y")
+
+        self.schedule_index = 0
+        self.create_schedule_elements()
+
     def create_module_elements(self):
-        if self.module_index < len(self.modules):
-            modul = self.modules[self.module_index]
-            print(f"Zeige ModulElement: {modul.acronym}, {modul.title}")
-            ModulElement(self.scrollable_frame, modul)
-            self.module_index += 1
-            self.root.after(100, self.create_module_elements)
+        for modul in self.modules:
+            ModulElement(self.scrollable_frame, modul, self.create_schedule_elements)
+
+    def create_schedule_elements(self):
+        for widget in self.scrollable_frame_c.winfo_children():
+            widget.destroy()
+        schedules = self.controller.get_schedules()
+        print("Schedule wurde aufgenommen")
+        for schedule in schedules:
+            print(f"Termin {schedule.schedule_date} wurde geladen")
+            ScheduleElement(self.scrollable_frame_c, schedule)
 
     def run(self):
         self.root.mainloop()

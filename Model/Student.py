@@ -2,6 +2,7 @@
 # zugegriffen werden kann.
 class Student:
     _instance = None
+    schedule_list = []
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -19,7 +20,6 @@ class Student:
             self.study = Study(study_duration, study_start_date)
             self.student_moduls = self.study.modul_list
             self.avg_grade = AvgGrade(planned_avg_grade, self.student_moduls)
-            self.schedule_list = []
             self.initialized = True
 
     # Aktualisiert die Werte des Moduls
@@ -33,13 +33,15 @@ class Student:
     def create_and_add_schedule(self, schedule_title, schedule_date):
         from Model.Schedule import Schedule
         schedule = Schedule(schedule_title, schedule_date)
-        self.schedule_list.append(schedule)
+        Student.schedule_list.append(schedule)
+        print("SChedule List:" , Student.schedule_list)
 
     # Erstellt ein Klasusurtermin und fügt ihn zur Liste hinzu
     def create_and_add_exam_schedule(self, exam_schedule_title, exam_schedule_date):
         from Model.ExamSchedule import ExamSchedule
         exam_schedule = ExamSchedule(exam_schedule_title, exam_schedule_date, None)
-        self.schedule_list.append(exam_schedule)
+        Student.schedule_list.append(exam_schedule)
+        print("SChedule List:", Student.schedule_list)
 
     # Löscht einen Termin
     def remove_schedule(self, schedule_id):

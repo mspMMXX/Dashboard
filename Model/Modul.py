@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from Model.Student import Student
 
+
 class Modul:
 
     def __init__(self, modul_id, acronym, title, exam_format, image_path, status):
@@ -44,10 +45,9 @@ class Modul:
 
     # Setzt das Prüfungsdatum und erstellt einen Prüfungstermin
     def set_exam_date_and_schedule(self, exam_date):
-        student = Student()
         self.exam_date = exam_date
-        if student:
-            student.create_and_add_exam_schedule(self.title, exam_date)
+        student = Student()
+        student.create_and_add_exam_schedule(self.title, exam_date)
 
     # Setzt die Modulnote
     def set_grade(self, grade):

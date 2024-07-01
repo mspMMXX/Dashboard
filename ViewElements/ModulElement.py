@@ -8,8 +8,9 @@ import os
 
 class ModulElement:
 
-    def __init__(self, parent, modul):
-        self.modul = modul  # Speichern Sie `modul` als Instanzvariable
+    def __init__(self, parent, modul, update_schedule_callback):
+        self.modul = modul
+        self.update_schedule_callback = update_schedule_callback
         self.frame = tk.Frame(parent, width=450, height=220, bg="#5F6E78", padx=10, pady=10)
         self.frame.pack_propagate(False)
         self.frame.pack(pady=10)
@@ -84,7 +85,8 @@ class ModulElement:
             self.deadline_lbl.config(text=modul.deadline.strftime('%Y-%m-%d'))
 
         exam_date_label = tk.Label(self.right_frame, text="Prüfungstermin:", bg="#5F6E78", fg="white")
-        exam_date_entry = tk.Entry(self.right_frame)
+        self.exam_date_entry = tk.Entry(self.right_frame)
+        self.exam_date_entry.bind("<FocusOut>", self.update_exam_schedule)
 
         grade_label = tk.Label(self.right_frame, text="Note:", bg="#5F6E78", fg="white")
         grade_entry = tk.Entry(self.right_frame)
@@ -107,7 +109,7 @@ class ModulElement:
         self.deadline_lbl.grid(row=5, column=1, sticky="w")
 
         exam_date_label.grid(row=6, column=0, sticky="w")
-        exam_date_entry.grid(row=6, column=1, sticky="w")
+        self.exam_date_entry.grid(row=6, column=1, sticky="w")
 
         grade_label.grid(row=7, column=0, sticky="w")
         grade_entry.grid(row=7, column=1, sticky="w")
@@ -139,17 +141,28 @@ class ModulElement:
         # Aktualisiert das Startdatum-Label
         if new_status == "In Bearbeitung":
             if self.modul.start_date:
-                self.start_date_lbl.config(text=self.modul.start_date.strftime('%Y-%m-%d'))
+                self.start_date_lbl.config(text=self.modul.start_date.strftime("%d.%m.%Y"))
             else:
                 self.start_date_lbl.config(text="")
 
             # Aktualisiert das Deadline-Label
             if self.modul.deadline:
-                self.deadline_lbl.config(text=self.modul.deadline.strftime('%Y-%m-%d'))
+                self.deadline_lbl.config(text=self.modul.deadline.strftime("%d.%m.%Y"))
             else:
                 self.deadline_lbl.config(text="")
 
         if self.modul.end_date:
-            self.end_date_lbl.config(text=self.modul.end_date.strftime('%Y-%m-%d'))
+            self.end_date_lbl.config(text=self.modul.end_date.strftime("%d.%m.%Y"))
         else:
             self.end_date_lbl.config(text="")
+
+    def update_exam_schedule(self, event):
+        exam_date_str = self.exam_date_entry.get()
+        print("Exam Date Entry:", exam_date_str)
+        if exam_date_str:
+            try:
+                exam_date = datetime.strptime(exam_date_str, "%d.%m.%Y")
+                self.modul.set_exam_date_and_schedule(exam_date)
+                self.update_schedule_callback()
+            except ValueError:
+                print("Ungültiges Datum")
