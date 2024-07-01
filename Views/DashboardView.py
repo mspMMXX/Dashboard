@@ -1,9 +1,12 @@
 import tkinter as tk
+from ViewElements.ModulElement import ModulElement
+from Controller.DashboardController import DashboardController
 
 
 class DashboardView:
 
     def __init__(self):
+        self.controller = DashboardController()
         self.root = tk.Tk()
         self.root.title = "IU Dashboard"
         self.root.geometry("1490x950")
@@ -16,7 +19,9 @@ class DashboardView:
         center_frame.pack(side="left", expand=True, fill="both")
         right_frame.pack(side="right", fill="y")
 
-        # modul_element = ModulElement(left_frame, )
+        modules = self.controller.get_modules()
+        for modul in modules:
+            ModulElement(left_frame, modul)
 
     def run(self):
         self.root.mainloop()

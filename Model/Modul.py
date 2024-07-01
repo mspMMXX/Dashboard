@@ -3,16 +3,16 @@ from datetime import datetime, timedelta
 
 class Modul:
 
-    def __init__(self, modul_id, acronym, title, exam_format, image):
+    def __init__(self, modul_id, acronym, title, exam_format, image_path):
         self.modul_id = modul_id
         self.acronym = acronym
         self.title = title
         self.exam_format = exam_format
-        self.image_path = image
+        self.image_path = image_path
         self.status = "Offen"
-        self.start_date = self.set_start_date()
+        self.start_date = None
         self.end_date = None
-        self.deadline = self.set_deadline()
+        self.deadline = None
         self.exam_date = None
         self.grade = None
 

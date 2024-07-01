@@ -9,43 +9,41 @@ class Study:
     def __init__(self, study_duration, study_start_date):
         self.study_duration = study_duration
         self.study_start_date = study_start_date
+        self.modul_list = {}
+        self.initialize_moduls()
         self.graduation_date = self.calc_graduation_date()
         self.expected_graduation_date = self.calc_expected_graduation_date()
         self.expected_graduation_date_is_before_graduation_date = (
             self.calc_expected_is_before_graduation_date())
-        self.modul_list = {}
-        self.initialize_moduls()
 
     # Berechnet das Abschlussdatum basierend auf das Startdatum und der Studiendauer
     def calc_graduation_date(self):
-        return self.study_start_date.replace(year=self.study_start_date + self.study_duration)
+        return self.study_start_date + dt.timedelta(days=self.study_duration * 365)
 
     # Methode zur Berechnung des voraussichtlichen Abschlussdatums. Basis der durchschnittlichen Bearbeitung der Module
     def calc_expected_graduation_date(self):
         sum_modul_time = 0
         sum_completed_moduls = 0
-        for modul in self.modul_list:
+        for modul in self.modul_list.values():
             if modul.status == "Abgeschlossen":
                 modul_time = (modul.end_date - modul.start_date).days
                 sum_modul_time += modul_time
                 sum_completed_moduls += 1
         if sum_completed_moduls > 0:
             avg_days_to_complete = (sum_modul_time / sum_completed_moduls) * 36
-            return self.study_start_date + dt.timedelta(days=self.study_start_date + avg_days_to_complete)
+            return self.study_start_date + dt.timedelta(days=avg_days_to_complete)
         else:
             return "Noch kein Modul abgeschlossen"
 
     # Berechnet, ob das voraussichtlich errechnete Abschlussdatum vor oder am selben Tag wie das Abschlussdatum ist
     def calc_expected_is_before_graduation_date(self):
-        if self.graduation_date >= self.expected_graduation_date():
+        if isinstance(self.expected_graduation_date, str):
             return True
-        else:
-            return False
+        return self.graduation_date >= self.expected_graduation_date
 
     # Anlegen aller Module des Studiengangs Softwareentwicklung
     def initialize_moduls(self):
         self.modul_list = {
-            1: Modul(1, "BLABLA", "Titel", "Klausur", "/Users/msp/Dropbox/07_IU"
-                                                      "/11_Objektorientierte_Programmierung_Python/02_Portfolio/"
-                                                      "01_Code/Dashboard/Images/Data_Science.png")
+            1: Modul(1, "DLBDSIDS01_D", "Einführung in Data Science",
+                     "Fachpräsentation", image_path="/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/Dashboard/Images/Data_Science.png")
         }
