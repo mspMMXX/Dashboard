@@ -141,18 +141,18 @@ class ModulElement:
         # Aktualisiert das Startdatum-Label
         if new_status == "In Bearbeitung":
             if self.modul.start_date:
-                self.start_date_lbl.config(text=self.modul.start_date.strftime("%d.%m.%Y"))
+                self.start_date_lbl.config(text=self.modul.start_date.strftime("%d.%m.%Y %H:%M"))
             else:
                 self.start_date_lbl.config(text="")
 
             # Aktualisiert das Deadline-Label
             if self.modul.deadline:
-                self.deadline_lbl.config(text=self.modul.deadline.strftime("%d.%m.%Y"))
+                self.deadline_lbl.config(text=self.modul.deadline.strftime("%d.%m.%Y %H:%M"))
             else:
                 self.deadline_lbl.config(text="")
 
         if self.modul.end_date:
-            self.end_date_lbl.config(text=self.modul.end_date.strftime("%d.%m.%Y"))
+            self.end_date_lbl.config(text=self.modul.end_date.strftime("%d.%m.%Y %H:%M"))
         else:
             self.end_date_lbl.config(text="")
 
@@ -161,7 +161,7 @@ class ModulElement:
         print("Exam Date Entry:", exam_date_str)
         if exam_date_str:
             try:
-                exam_date = datetime.strptime(exam_date_str, "%d.%m.%Y")
+                exam_date = datetime.strptime(exam_date_str, "%d.%m.%Y %H:%M")
                 self.modul.set_exam_date_and_schedule(exam_date)
                 self.update_schedule_callback()
             except ValueError:
