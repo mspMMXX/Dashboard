@@ -1,15 +1,14 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from tkinter import ttk
-from Model.Student import Student
 from datetime import datetime
 import os
 
 
 class ModulElement:
-
-    def __init__(self, parent, modul, update_schedule_callback):
+    def __init__(self, parent, modul, student, update_schedule_callback):
         self.modul = modul
+        self.student = student
         self.update_schedule_callback = update_schedule_callback
         self.frame = tk.Frame(parent, width=450, height=220, bg="#5F6E78", padx=10, pady=10)
         self.frame.pack_propagate(False)
@@ -47,7 +46,6 @@ class ModulElement:
 
         title_label = tk.Label(self.right_frame, text=modul.title, bg="#5F6E78", fg="white")
 
-        # Erstelle das Status-Oval und speichere die ID des Ovals
         self.status_oval = tk.Canvas(self.right_frame, width=25, height=25, bg="#5F6E78", highlightthickness=0)
         if modul.status == "Offen":
             fill_status = "gray"
@@ -62,8 +60,6 @@ class ModulElement:
         status_dropdown = ttk.Combobox(self.right_frame, textvariable=self.status_var)
         status_dropdown['values'] = ("Offen", "In Bearbeitung", "Abgeschlossen")
         status_dropdown.current(0)
-
-        # Binde die Methode an das Ändern des Dropdown-Menüwerts
         status_dropdown.bind("<<ComboboxSelected>>", self.update_modul)
 
         exam_form_label = tk.Label(self.right_frame, text="Prüfungsform:", bg="#5F6E78", fg="white")
@@ -115,15 +111,13 @@ class ModulElement:
         grade_label.grid(row=7, column=0, sticky="w")
         self.grade_entry.grid(row=7, column=1, sticky="w")
 
-    # Methode zur Aktualisierung des Status-Ovals
     def update_modul(self, event):
         new_status = self.status_var.get()
         self.modul.set_status(new_status)
         self.modul.set_start_date()
         self.modul.set_end_date()
 
-        student = Student(last_name="Mustermann", first_name="Max", study_duration=3, study_start_date=datetime(2024, 1, 3))
-        self.modul.set_deadline(student)
+        self.modul.set_deadline(self.student)
 
         if new_status == "Abgeschlossen":
             self.modul.set_end_date()
@@ -139,14 +133,12 @@ class ModulElement:
 
         self.status_oval.itemconfig(self.oval_id, fill=fill_status)
 
-        # Aktualisiert das Startdatum-Label
         if new_status == "In Bearbeitung":
             if self.modul.start_date:
                 self.start_date_lbl.config(text=self.modul.start_date.strftime("%d.%m.%Y %H:%M"))
             else:
                 self.start_date_lbl.config(text="")
 
-            # Aktualisiert das Deadline-Label
             if self.modul.deadline:
                 self.deadline_lbl.config(text=self.modul.deadline.strftime("%d.%m.%Y %H:%M"))
             else:
@@ -173,4 +165,7 @@ class ModulElement:
         if exam_grade != "":
             self.modul.set_grade(float(exam_grade))
             print(f"Note gesetzt für Modul {self.modul.title}: {self.modul.grade}")
-
+            # Aktualisieren des Durchschnitts der Noten
+            self.student.avg_grade.calc_avg_grade(self.student.student_moduls)
+            # Aktualisieren der GUI
+            self.update_schedule_callback()

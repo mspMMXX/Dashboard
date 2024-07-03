@@ -12,7 +12,7 @@ class Study:
         self.modul_list = {}
         self.initialize_moduls()
         self.graduation_date = self.calc_graduation_date()
-        self.expected_graduation_date = self.calc_expected_graduation_date()
+        self.expected_graduation_date = self.graduation_date
         self.expected_graduation_date_is_before_graduation_date = (
             self.calc_expected_is_before_graduation_date())
 
@@ -31,9 +31,9 @@ class Study:
                 sum_completed_moduls += 1
         if sum_completed_moduls > 0:
             avg_days_to_complete = (sum_modul_time / sum_completed_moduls) * 36
-            return self.study_start_date + dt.timedelta(days=avg_days_to_complete)
+            self.expected_graduation_date = self.study_start_date + dt.timedelta(days=avg_days_to_complete)
         else:
-            return "Noch kein Modul abgeschlossen"
+            self.expected_graduation_date = self.graduation_date
 
     # Berechnet, ob das voraussichtlich errechnete Abschlussdatum vor oder am selben Tag wie das Abschlussdatum ist
     def calc_expected_is_before_graduation_date(self):

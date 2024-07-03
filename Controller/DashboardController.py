@@ -1,5 +1,6 @@
 from Model.Study import Study
 from Model.Student import Student
+from Model.IUInformation import IUInformation
 import datetime as dt
 
 
@@ -8,6 +9,7 @@ class DashboardController:
     def __init__(self):
         self.study = Study(3, dt.date(2024, 1, 5))
         self.student = Student("Mustermann", "Max", 12932823, 3)
+        self.iu_info = IUInformation()
 
     def get_modules(self):
         return list(self.study.modul_list.values())
