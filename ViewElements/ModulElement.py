@@ -89,7 +89,8 @@ class ModulElement:
         self.exam_date_entry.bind("<FocusOut>", self.update_exam_schedule)
 
         grade_label = tk.Label(self.right_frame, text="Note:", bg="#5F6E78", fg="white")
-        grade_entry = tk.Entry(self.right_frame)
+        self.grade_entry = tk.Entry(self.right_frame)
+        self.grade_entry.bind("<FocusOut>", self.update_grade)
 
         title_label.grid(row=0, column=0, columnspan=2, sticky="w")
 
@@ -112,7 +113,7 @@ class ModulElement:
         self.exam_date_entry.grid(row=6, column=1, sticky="w")
 
         grade_label.grid(row=7, column=0, sticky="w")
-        grade_entry.grid(row=7, column=1, sticky="w")
+        self.grade_entry.grid(row=7, column=1, sticky="w")
 
     # Methode zur Aktualisierung des Status-Ovals
     def update_modul(self, event):
@@ -166,3 +167,10 @@ class ModulElement:
                 self.update_schedule_callback()
             except ValueError:
                 print("Ungültiges Datum")
+
+    def update_grade(self, event):
+        exam_grade = self.grade_entry.get()
+        if exam_grade != "":
+            self.modul.set_grade(float(exam_grade))
+            print(f"Note gesetzt für Modul {self.modul.title}: {self.modul.grade}")
+

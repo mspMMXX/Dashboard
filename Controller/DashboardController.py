@@ -20,3 +20,16 @@ class DashboardController:
 
     def get_schedules(self):
         return self.student.schedule_list
+
+    def set_planned_avg_grade(self, avg_grade):
+        self.student.avg_grade.set_planned_avg_grade(float(avg_grade))
+
+    def get_planned_avg_grade(self):
+        return self.student.avg_grade
+
+    def calc_avg_grade(self):
+        print("Berechne den Notendurchschnitt...")
+        self.student.avg_grade.calc_avg_grade(self.study.modul_list)
+
+    def avg_is_better_than_planned(self):
+        self.student.avg_grade.calc_avg_grade_is_better_than_planned()

@@ -3,7 +3,6 @@ import datetime as dt
 # zugegriffen werden kann.
 
 
-
 class Student:
     _instance = None
     schedule_list = []
@@ -14,7 +13,7 @@ class Student:
         return cls._instance
 
     def __init__(self, last_name=None, first_name=None, student_number=None, study_duration=None,
-                 study_start_date=None, planned_avg_grade=None):
+                 study_start_date=None):
         if not hasattr(self, "initialized"):
             from Model.Study import Study
             from Model.AvgGrade import AvgGrade
@@ -25,7 +24,7 @@ class Student:
             self.student_number = student_number
             self.study = Study(study_duration, study_start_date)
             self.student_moduls = self.study.modul_list
-            self.avg_grade = AvgGrade(planned_avg_grade, self.student_moduls)
+            self.avg_grade = AvgGrade()
             self.initialized = True
 
     # Aktualisiert die Werte des Moduls

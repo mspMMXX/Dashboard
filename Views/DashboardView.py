@@ -89,14 +89,14 @@ class DashboardView:
         avg_grade_title.grid(row=0, column=1, sticky="e")
 
         planned_grade_label = tk.Label(right_frame, text="Geplant:")
-        planned_grade_entry = tk.Entry(right_frame)
+        self.planned_grade_entry = tk.Entry(right_frame)
         actual_grade_label = tk.Label(right_frame, text="Momentan:")
-        actual_grade_lbl = tk.Label(right_frame, text=self.get_actual_avg_grade())
+        self.actual_grade_lbl = tk.Label(right_frame, text=self.controller.student.avg_grade.actual_avg_grade)
 
         planned_grade_label.grid(row=1, column=0, sticky="w")
-        planned_grade_entry.grid(row=1, column=1, sticky="e")
+        self.planned_grade_entry.grid(row=1, column=1, sticky="e")
         actual_grade_label.grid(row=2, column=0, sticky="w")
-        actual_grade_lbl.grid(row=2, column=1, sticky="e")
+        self.actual_grade_lbl.grid(row=2, column=1, sticky="e")
 
         # Studium
         study_label = tk.Label(right_frame, text="Studium", pady=15, font=title_font)
@@ -136,7 +136,7 @@ class DashboardView:
 
         contact_title.grid(row=9, column=1, sticky="e", pady=15)
         study_advisory_label.grid(row=10, column=0, sticky="w")
-        study_coach_lbl.grid(row=10, column=1, sticky="e")
+        study_advisory_lbl.grid(row=10, column=1, sticky="e")
         exam_service_label.grid(row=11, column=0, sticky="w")
         exam_service_lbl.grid(row=11, column=1, sticky="e")
         study_coach_label.grid(row=12, column=0, sticky="w")
@@ -160,6 +160,10 @@ class DashboardView:
         first_name_lbl.grid(row=16, column=1, sticky="e")
         student_number_label.grid(row=17, column=0, sticky="w")
         student_number_lbl.grid(row=17, column=1, sticky="e")
+
+        refresh_button = tk.Button(right_frame, text="Aktualisieren", command=self.refresh_button_action)
+        refresh_button.grid(row=18, column=1, sticky="e", pady=15)
+
     def create_module_elements(self):
         for modul in self.modules:
             ModulElement(self.scrollable_frame, modul, self.create_schedule_elements)
@@ -179,8 +183,26 @@ class DashboardView:
         self.schedule_entry.delete(0, tk.END)
         self.schedule_date_entry.delete(0, tk.END)
 
-    def get_actual_avg_grade(self):
-        return str(5)
+    def refresh_button_action(self):
+        if self.planned_grade_entry.get() != "":
+            self.controller.set_planned_avg_grade(float(self.planned_grade_entry.get()))
+            self.controller.student.avg_grade.calc_avg_grade_is_better_than_planned()
+            self.grade_label_color()
+        self.controller.calc_avg_grade()
+        self.update_avg_grade_label()
+
+    def update_avg_grade_label(self):
+        actual_avg_grade = self.controller.student.avg_grade.actual_avg_grade
+        print(f"Aktualisierter Notendurchschnitt: {actual_avg_grade}")
+        self.actual_grade_lbl.config(text=str(actual_avg_grade) if actual_avg_grade is not None else "N/A")
+
+    def grade_label_color(self):
+        if self.planned_grade_entry.get() != "":
+            self.controller.student.avg_grade.calc_avg_grade_is_better_than_planned()
+            if self.controller.student.avg_grade.actual_avg_grade_is_better_than_planned:
+                self.actual_grade_lbl.config(fg="green")
+            else:
+                self.actual_grade_lbl.config(fg="red")
 
     def run(self):
         self.root.mainloop()
