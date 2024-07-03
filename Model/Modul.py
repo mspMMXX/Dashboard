@@ -3,7 +3,6 @@ from Model.Student import Student
 
 
 class Modul:
-
     def __init__(self, modul_id, acronym, title, exam_format, image_path, status):
         self.modul_id = modul_id
         self.acronym = acronym
@@ -17,23 +16,23 @@ class Modul:
         self.exam_date = None
         self.grade = None
 
-    # Setzen des Status
     def set_status(self, status):
         self.status = status
+        self.set_start_date()
+        self.set_end_date()
+        print(f"Status für Modul {self.title} gesetzt: {self.status}, start_date: {self.start_date}, end_date: {self.end_date}")
 
-    # Setzen des Modulbeginns
     def set_start_date(self):
         if self.status == "In Bearbeitung":
-            self.start_date = datetime.now()
-        else:
-            self.start_date = None
+            if self.start_date is None:  # Nur setzen, wenn es noch nicht gesetzt ist
+                self.start_date = datetime.now()
+                print(f"Startdatum für Modul {self.title} gesetzt: {self.start_date}")
 
-    # Wann das Modul abgeschlossen wurde
     def set_end_date(self):
         if self.status == "Abgeschlossen":
-            self.end_date = datetime.now()
-        else:
-            self.end_date = None
+            if self.end_date is None:  # Nur setzen, wenn es noch nicht gesetzt ist
+                self.end_date = datetime.now()
+                print(f"Enddatum für Modul {self.title} gesetzt: {self.end_date}")
 
     # Generiert die Deadline bis wann das Modul abgeschlossen werden muss
     def set_deadline(self, student):

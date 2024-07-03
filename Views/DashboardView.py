@@ -11,15 +11,15 @@ class DashboardView:
         self.controller = DashboardController()
         self.root = tk.Tk()
         self.root.title("IU Dashboard")
-        self.root.geometry("1490x950")
+        self.root.geometry("1500x800")
 
         left_frame = tk.Frame(self.root, width=496.6)
         center_frame = tk.Frame(self.root, width=496.6)
         right_frame = tk.Frame(self.root, width=496.6)
 
         left_frame.pack(side="left", fill="y")
-        center_frame.pack(side="left", expand=True, fill="both")
-        right_frame.pack(side="right", fill="y")
+        center_frame.pack(side="left", fill="y")
+        right_frame.pack(side="left", fill="y")
 
         # left_frame: Scrollbar mit Modulen
         canvas = tk.Canvas(left_frame, width=496.6)
@@ -109,7 +109,7 @@ class DashboardView:
         study_end_label = tk.Label(right_frame, text="Abschluss:")
         study_end_lbl = tk.Label(right_frame, text=self.controller.study.graduation_date.strftime('%Y-%m-%d'))
         expected_end_label = tk.Label(right_frame, text="Voraussichtlicher Abschluss:")
-        expected_end_lbl = tk.Label(right_frame, text=self.controller.study.expected_graduation_date.strftime('%Y-%m-%d'))
+        self.expected_end_lbl = tk.Label(right_frame, text=self.controller.study.expected_graduation_date.strftime('%Y-%m-%d'))
 
         study_label.grid(row=3, column=1, sticky="e")
         study_name_label.grid(row=4, column=0, sticky="w")
@@ -121,7 +121,7 @@ class DashboardView:
         study_end_label.grid(row=7, column=0, sticky="w")
         study_end_lbl.grid(row=7, column=1, sticky="e")
         expected_end_label.grid(row=8, column=0, sticky="w")
-        expected_end_lbl.grid(row=8, column=1, sticky="e")
+        self.expected_end_lbl.grid(row=8, column=1, sticky="e")
 
         # IU-Kontaktdaten
         contact_title = tk.Label(right_frame, text="IU-Kontaktdaten", font=title_font)
@@ -190,7 +190,8 @@ class DashboardView:
             self.controller.set_planned_avg_grade(float(self.planned_grade_entry.get()))
             self.controller.student.avg_grade.calc_avg_grade_is_better_than_planned()
             self.grade_label_color()
-        self.controller.study.calc_expected_graduation_date()
+        self.update_expected_graduation_date()  # Aktualisiert das Label für das erwartete Abschlussdatum
+        self.graduate_label_color()  # Ändert die Farbe des Labels basierend auf der Bedingung
         self.root.update_idletasks()
 
     def update_avg_grade_label(self):
@@ -206,6 +207,18 @@ class DashboardView:
                 self.actual_grade_lbl.config(fg="green")
             else:
                 self.actual_grade_lbl.config(fg="red")
+
+    def graduate_label_color(self):
+        self.controller.study.calc_expected_is_before_graduation_date()
+        if self.controller.study.expected_graduation_date_is_before_graduation_date:
+            self.expected_end_lbl.config(fg="green")
+        else:
+            self.expected_end_lbl.config(fg="red")
+
+    def update_expected_graduation_date(self):
+        expected_date = self.controller.study.calc_expected_graduation_date()
+        print(f"Erwartetes Abschlussdatum: {expected_date}")
+        self.expected_end_lbl.config(text=expected_date.strftime('%Y-%m-%d'))
 
     def run(self):
         self.root.mainloop()

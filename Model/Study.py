@@ -13,8 +13,7 @@ class Study:
         self.initialize_moduls()
         self.graduation_date = self.calc_graduation_date()
         self.expected_graduation_date = self.graduation_date
-        self.expected_graduation_date_is_before_graduation_date = (
-            self.calc_expected_is_before_graduation_date())
+        self.expected_graduation_date_is_before_graduation_date = True
 
     # Berechnet das Abschlussdatum basierend auf das Startdatum und der Studiendauer
     def calc_graduation_date(self):
@@ -26,20 +25,28 @@ class Study:
         sum_completed_moduls = 0
         for modul in self.modul_list.values():
             if modul.status == "Abgeschlossen":
-                modul_time = (modul.end_date - modul.start_date).days
-                sum_modul_time += modul_time
-                sum_completed_moduls += 1
+                print(f"Überprüfe Modul: {modul.title} - start_date: {modul.start_date}, end_date: {modul.end_date}")
+                if modul.start_date is not None and modul.end_date is not None:
+                    modul_time = (modul.end_date - modul.start_date).days
+                    sum_modul_time += modul_time
+                    sum_completed_moduls += 1
+                else:
+                    print(
+                        f"Warnung: Modul {modul.title} hat keine vollständigen Datumswerte. start_date: {modul.start_date}, end_date: {modul.end_date}")
         if sum_completed_moduls > 0:
             avg_days_to_complete = (sum_modul_time / sum_completed_moduls) * 36
             self.expected_graduation_date = self.study_start_date + dt.timedelta(days=avg_days_to_complete)
         else:
             self.expected_graduation_date = self.graduation_date
+        print(f"Berechnetes erwartetes Abschlussdatum: {self.expected_graduation_date}")
+        return self.expected_graduation_date
 
     # Berechnet, ob das voraussichtlich errechnete Abschlussdatum vor oder am selben Tag wie das Abschlussdatum ist
     def calc_expected_is_before_graduation_date(self):
-        if isinstance(self.expected_graduation_date, str):
-            return True
-        return self.graduation_date >= self.expected_graduation_date
+        if self.graduation_date >= self.expected_graduation_date:
+            self.expected_graduation_date_is_before_graduation_date = True
+        else:
+            self.expected_graduation_date_is_before_graduation_date = False
 
     # Anlegen aller Module des Studiengangs Softwareentwicklung
     def initialize_moduls(self):
