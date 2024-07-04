@@ -1,5 +1,6 @@
 import tkinter as tk
 
+
 class ScheduleElement:
 
     def __init__(self, parent, schedule, remove_callback):

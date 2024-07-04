@@ -20,14 +20,13 @@ class ModulElement:
 
         image_path = modul.image_path
         if not os.path.exists(image_path):
-            print(f"Bilddatei nicht gefunden: {image_path}")
             image = None
         else:
             try:
                 image = PhotoImage(file=image_path)
             except Exception as e:
-                print(f"Fehler beim Darstellen des Bildes: {e}")
                 image = None
+                print(f"Fehler beim Bild: {e}")
 
         acronym_label = tk.Label(self.left_frame, text=modul.acronym, bg="#5F6E78", fg="white")
         modul_image = tk.Label(self.left_frame, image=image, width=150, height=150, bg="#5F6E78")
@@ -164,8 +163,5 @@ class ModulElement:
         exam_grade = self.grade_entry.get()
         if exam_grade != "":
             self.modul.set_grade(float(exam_grade))
-            print(f"Note gesetzt für Modul {self.modul.title}: {self.modul.grade}")
-            # Aktualisieren des Durchschnitts der Noten
             self.student.avg_grade.calc_avg_grade(self.student.student_moduls)
-            # Aktualisieren der GUI
             self.update_schedule_callback()

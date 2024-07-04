@@ -16,23 +16,23 @@ class Modul:
         self.exam_date = None
         self.grade = None
 
+    # Setzt den Status und das Start- und Abschlussdatum eines Moduls
     def set_status(self, status):
         self.status = status
         self.set_start_date()
         self.set_end_date()
-        print(f"Status für Modul {self.title} gesetzt: {self.status}, start_date: {self.start_date}, end_date: {self.end_date}")
 
+    # Setzt das Startdatum basierend auf dem Status "In Bearbeitung"
     def set_start_date(self):
         if self.status == "In Bearbeitung":
             if self.start_date is None:  # Nur setzen, wenn es noch nicht gesetzt ist
                 self.start_date = datetime.now()
-                print(f"Startdatum für Modul {self.title} gesetzt: {self.start_date}")
 
+    # Setzt das Enddatum basierend auf dem Status "Abgeschlossen"
     def set_end_date(self):
         if self.status == "Abgeschlossen":
             if self.end_date is None:  # Nur setzen, wenn es noch nicht gesetzt ist
                 self.end_date = datetime.now()
-                print(f"Enddatum für Modul {self.title} gesetzt: {self.end_date}")
 
     # Generiert die Deadline bis wann das Modul abgeschlossen werden muss
     def set_deadline(self, student):

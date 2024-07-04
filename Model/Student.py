@@ -1,4 +1,6 @@
 import datetime as dt
+from Model.Schedule import Schedule
+from Model.ExamSchedule import ExamSchedule
 # Singelton Klasse, da nur eine Instanz existieren soll und in anderen Klassen auf die seleben Attributwerte
 # zugegriffen werden kann.
 
@@ -34,23 +36,19 @@ class Student:
         self.student_moduls[modul_id].exam_date = exam_date
         self.student_moduls[modul_id].grade = grade
 
-    # Erstellt ein Termin und fügt ihn zur Liste hinzu
+    # Erstellt einen Termin und fügt ihn zur schedule_list hinzu
     def create_and_add_schedule(self, schedule_title, schedule_date):
-        from Model.Schedule import Schedule
         if isinstance(schedule_date, str):
             schedule_date = dt.datetime.strptime(schedule_date, "%d.%m.%Y %H:%M")
         schedule = Schedule(schedule_title, schedule_date)
-        Student.schedule_list.append(schedule)
-        print("Schedule List:", Student.schedule_list)
+        self.schedule_list.append(schedule)
 
-    # Erstellt ein Klasusurtermin und fügt ihn zur Liste hinzu
+    # Erstellt ein Klasusurtermin und fügt ihn zur schedule_list hinzu
     def create_and_add_exam_schedule(self, exam_schedule_title, exam_schedule_date):
-        from Model.ExamSchedule import ExamSchedule
         if isinstance(exam_schedule_date, str):
             exam_schedule_date = dt.datetime.strptime(exam_schedule_date, "%d.%m.%Y %H:%M")
         exam_schedule = ExamSchedule(exam_schedule_title, exam_schedule_date, None)
-        Student.schedule_list.append(exam_schedule)
-        print("Schedule List:", Student.schedule_list)
+        self.schedule_list.append(exam_schedule)
 
     # Löscht einen Termin
     def remove_schedule(self, schedule_id):

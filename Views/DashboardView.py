@@ -91,7 +91,8 @@ class DashboardView:
         planned_grade_label = tk.Label(right_frame, text="Geplant:")
         self.planned_grade_entry = tk.Entry(right_frame)
         actual_grade_label = tk.Label(right_frame, text="Momentan:")
-        self.actual_grade_lbl = tk.Label(right_frame, text=str(format(self.controller.student.avg_grade.actual_avg_grade, ".1f")))
+        self.actual_grade_lbl = tk.Label(right_frame, text=str(format(self.controller.student.avg_grade.
+                                                                      actual_avg_grade, ".1f")))
 
         planned_grade_label.grid(row=1, column=0, sticky="w")
         self.planned_grade_entry.grid(row=1, column=1, sticky="e")
@@ -109,7 +110,8 @@ class DashboardView:
         study_end_label = tk.Label(right_frame, text="Abschluss:")
         study_end_lbl = tk.Label(right_frame, text=self.controller.study.graduation_date.strftime('%Y-%m-%d'))
         expected_end_label = tk.Label(right_frame, text="Voraussichtlicher Abschluss:")
-        self.expected_end_lbl = tk.Label(right_frame, text=self.controller.study.expected_graduation_date.strftime('%Y-%m-%d'))
+        self.expected_end_lbl = tk.Label(right_frame, text=self.controller.study.expected_graduation_date.
+                                         strftime('%Y-%m-%d'))
 
         study_label.grid(row=3, column=1, sticky="e")
         study_name_label.grid(row=4, column=0, sticky="w")
@@ -202,8 +204,8 @@ class DashboardView:
 
     def grade_label_color(self):
         if self.planned_grade_entry.get() != "":
-            self.controller.student.avg_grade.calc_avg_grade_is_better_than_planned()
-            if self.controller.student.avg_grade.actual_avg_grade_is_better_than_planned:
+            self.controller.avg_is_better_than_planned()
+            if self.controller.get_avg_is_better_than_planned():
                 self.actual_grade_lbl.config(fg="green")
             else:
                 self.actual_grade_lbl.config(fg="red")
