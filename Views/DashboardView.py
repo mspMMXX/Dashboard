@@ -168,16 +168,21 @@ class DashboardView:
 
     def create_module_elements(self):
         for modul in self.modules:
-            ModulElement(self.scrollable_frame, modul, self.controller.student, self.create_schedule_elements, )
+            modul_element = ModulElement(self.scrollable_frame, modul, self.controller.student,
+                                         self.create_schedule_elements)
+            modul_element.frame.pack(pady=10)
 
     def create_schedule_elements(self):
         for widget in self.scrollable_frame_c.winfo_children():
             widget.destroy()
-        schedules = self.controller.get_schedules()
-        print("Schedule wurde aufgenommen")
-        for schedule in schedules:
-            print(f"Termin {schedule.schedule_date} wurde geladen")
-            ScheduleElement(self.scrollable_frame_c, schedule, self.controller.delete_schedule)
+        try:
+            schedules = self.controller.get_schedules()
+            print("Schedule wurde aufgenommen")
+            for schedule_data in schedules:
+                print(f"Termin {schedule_data['schedule_date']} wurde geladen")
+                ScheduleElement(self.scrollable_frame_c, schedule_data, self.controller.delete_schedule)
+        except Exception as e:
+            print(f"Fehler beim Laden der Termine: {str(e)}")
 
     def create_new_schedule(self):
         self.controller.create_new_schedule(self.schedule_entry.get(), self.schedule_date_entry.get())
@@ -192,8 +197,8 @@ class DashboardView:
             self.controller.set_planned_avg_grade(float(self.planned_grade_entry.get()))
             self.controller.student.avg_grade.calc_avg_grade_is_better_than_planned()
             self.grade_label_color()
-        self.update_expected_graduation_date()  # Aktualisiert das Label für das erwartete Abschlussdatum
-        self.graduate_label_color()  # Ändert die Farbe des Labels basierend auf der Bedingung
+        self.update_expected_graduation_date()
+        self.graduate_label_color()
         self.root.update_idletasks()
 
     def update_avg_grade_label(self):
@@ -223,6 +228,7 @@ class DashboardView:
         self.expected_end_lbl.config(text=expected_date.strftime('%Y-%m-%d'))
 
     def run(self):
+        self.create_schedule_elements()
         self.root.mainloop()
 
 

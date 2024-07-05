@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import PhotoImage
 from tkinter import ttk
 from datetime import datetime
 import os
@@ -18,12 +17,13 @@ class ModulElement:
         self.left_frame.pack_propagate(False)
         self.left_frame.pack(side="left", fill="both", expand=True, padx=(0, 5))
 
+        # Bild laden
         image_path = modul.image_path
         if not os.path.exists(image_path):
             image = None
         else:
             try:
-                image = PhotoImage(file=image_path)
+                image = tk.PhotoImage(file=image_path)
             except Exception as e:
                 image = None
                 print(f"Fehler beim Bild: {e}")
@@ -79,9 +79,18 @@ class ModulElement:
         if modul.deadline:
             self.deadline_lbl.config(text=modul.deadline.strftime('%Y-%m-%d'))
 
+        # Prüfungsdatum
         exam_date_label = tk.Label(self.right_frame, text="Prüfungstermin:", bg="#5F6E78", fg="white")
         self.exam_date_entry = tk.Entry(self.right_frame)
+
+        # Wenn bereits ein Prüfungsdatum gesetzt ist, anzeigen
+        if self.modul.exam_date:
+            self.exam_date_entry.insert(0, self.modul.exam_date.strftime('%d.%m.%Y %H:%M'))
+
         self.exam_date_entry.bind("<FocusOut>", self.update_exam_schedule)
+
+        exam_date_label.grid(row=6, column=0, sticky="w")
+        self.exam_date_entry.grid(row=6, column=1, sticky="w")
 
         grade_label = tk.Label(self.right_frame, text="Note:", bg="#5F6E78", fg="white")
         self.grade_entry = tk.Entry(self.right_frame)
@@ -104,11 +113,19 @@ class ModulElement:
         deadline_label.grid(row=5, column=0, sticky="w")
         self.deadline_lbl.grid(row=5, column=1, sticky="w")
 
-        exam_date_label.grid(row=6, column=0, sticky="w")
-        self.exam_date_entry.grid(row=6, column=1, sticky="w")
-
         grade_label.grid(row=7, column=0, sticky="w")
         self.grade_entry.grid(row=7, column=1, sticky="w")
+
+    def update_exam_schedule(self, event):
+        exam_date_str = self.exam_date_entry.get()
+        print("Exam Date Entry:", exam_date_str)
+        if exam_date_str:
+            try:
+                exam_date = datetime.strptime(exam_date_str, "%d.%m.%Y %H:%M")
+                self.modul.set_exam_date_and_schedule(exam_date, self.student)
+                self.update_schedule_callback()  # Aktualisiere die Terminliste in der GUI
+            except ValueError:
+                print("Ungültiges Datum")
 
     def update_modul(self, event):
         new_status = self.status_var.get()
@@ -147,17 +164,6 @@ class ModulElement:
             self.end_date_lbl.config(text=self.modul.end_date.strftime("%d.%m.%Y %H:%M"))
         else:
             self.end_date_lbl.config(text="")
-
-    def update_exam_schedule(self, event):
-        exam_date_str = self.exam_date_entry.get()
-        print("Exam Date Entry:", exam_date_str)
-        if exam_date_str:
-            try:
-                exam_date = datetime.strptime(exam_date_str, "%d.%m.%Y %H:%M")
-                self.modul.set_exam_date_and_schedule(exam_date, self.student)
-                self.update_schedule_callback()
-            except ValueError:
-                print("Ungültiges Datum")
 
     def update_grade(self, event):
         exam_grade = self.grade_entry.get()
