@@ -43,9 +43,8 @@ class Modul:
             self.deadline = None
 
     # Setzt das Prüfungsdatum und erstellt einen Prüfungstermin
-    def set_exam_date_and_schedule(self, exam_date):
+    def set_exam_date_and_schedule(self, exam_date, student):
         self.exam_date = exam_date
-        student = Student()
         student.create_and_add_exam_schedule(self.title, exam_date)
 
     # Setzt die Modulnote

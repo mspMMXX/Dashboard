@@ -17,6 +17,8 @@ class Study:
 
     # Berechnet das Abschlussdatum basierend auf das Startdatum und der Studiendauer
     def calc_graduation_date(self):
+        if self.study_start_date is None or self.study_duration is None:
+            raise ValueError("study_start_date and study_duration must not be None")
         return self.study_start_date + dt.timedelta(days=self.study_duration * 365)
 
     # Methode zur Berechnung des voraussichtlichen Abschlussdatums. Basis der durchschnittlichen Bearbeitung der Module

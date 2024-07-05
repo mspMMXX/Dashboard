@@ -1,14 +1,16 @@
 from Model.Study import Study
 from Model.Student import Student
 from Model.IUInformation import IUInformation
+from DB.DataBase import DataBase
 import datetime as dt
 
 
 class DashboardController:
 
     def __init__(self):
+        db = DataBase(host="localhost", user="root", password="", database="iu_dashboard")
         self.study = Study(3, dt.date(2024, 1, 5))
-        self.student = Student("Mustermann", "Max", 12932823, 3)
+        self.student = Student(db, 3, dt.date(2024, 1, 5),  "Mustermann", "Max", 3249823)
         self.iu_info = IUInformation()
 
     # Gibt das Modul-Dictionary zurück.
@@ -46,3 +48,8 @@ class DashboardController:
     # Gibt den boolschen Wert von avg_is_bestter_than_planned
     def get_avg_is_better_than_planned(self):
         return self.student.avg_grade.actual_avg_grade_is_better_than_planned
+
+    def set_exam_date_for_modul(self, modul_id, exam_date):
+        modul = self.study.modul_list.get(modul_id)
+        if modul:
+            modul.set_exam_date_and_schedule(exam_date, self.student)

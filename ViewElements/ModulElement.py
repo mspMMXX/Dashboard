@@ -154,7 +154,7 @@ class ModulElement:
         if exam_date_str:
             try:
                 exam_date = datetime.strptime(exam_date_str, "%d.%m.%Y %H:%M")
-                self.modul.set_exam_date_and_schedule(exam_date)
+                self.modul.set_exam_date_and_schedule(exam_date, self.student)
                 self.update_schedule_callback()
             except ValueError:
                 print("Ungültiges Datum")
