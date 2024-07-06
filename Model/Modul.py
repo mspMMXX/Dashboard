@@ -19,7 +19,23 @@ class Modul:
         self.id = None
 
     def save(self):
-        if self.id is None:
+        query = "SELECT id FROM Modul WHERE modul_id = %s AND student_id = %s"
+        params = (self.modul_id, self.student_id)
+        result = self.db.fetch_one(query, params)
+
+        if result:
+            self.id = result['id']
+            query = """
+            UPDATE Modul
+            SET acronym = %s, title = %s, exam_format = %s, image_path = %s, status = %s, 
+                start_date = %s, end_date = %s, deadline = %s, exam_date = %s, grade = %s, student_id = %s
+            WHERE id = %s
+            """
+            params = (self.acronym, self.title, self.exam_format, self.image_path, self.status,
+                      self.start_date, self.end_date, self.deadline, self.exam_date, self.grade, self.student_id,
+                      self.id)
+            self.db.execute_query(query, params)
+        else:
             query = """
             INSERT INTO Modul (modul_id, acronym, title, exam_format, image_path, status, start_date, end_date, 
             deadline, exam_date, grade, student_id)
@@ -29,16 +45,6 @@ class Modul:
                       self.start_date, self.end_date, self.deadline, self.exam_date, self.grade, self.student_id)
             self.db.execute_query(query, params)
             self.id = self.db.cursor.lastrowid
-        else:
-            query = """
-            UPDATE Modul
-            SET modul_id = %s, acronym = %s, title = %s, exam_format = %s, image_path = %s, status = %s, 
-            start_date = %s, end_date = %s, deadline = %s, exam_date = %s, grade = %s
-            WHERE id = %s
-            """
-            params = (self.modul_id, self.acronym, self.title, self.exam_format, self.image_path, self.status,
-                      self.start_date, self.end_date, self.deadline, self.exam_date, self.grade, self.id)
-            self.db.execute_query(query, params)
 
     def load(self, modul_id):
         query = "SELECT * FROM Modul WHERE id = %s"
@@ -71,6 +77,7 @@ class Modul:
         self.status = status
         self.set_start_date()
         self.set_end_date()
+        self.save()
 
     # Setzt das Startdatum basierend auf dem Status "In Bearbeitung"
     def set_start_date(self):

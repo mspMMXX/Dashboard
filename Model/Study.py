@@ -12,10 +12,31 @@ class Study:
         self.study_start_date = study_start_date
         self.student_id = student_id
         self.modul_list = {}
-        self.initialize_moduls()
+        self.load_moduls_from_db()
         self.graduation_date = self.calc_graduation_date()
         self.expected_graduation_date = self.graduation_date
         self.expected_graduation_date_is_before_graduation_date = True
+
+    def load_moduls_from_db(self):
+        query = "SELECT * FROM Modul WHERE student_id = %s"
+        params = (self.student_id,)
+        result = self.db.fetch_all(query, params)
+
+        if result:
+            for modul_data in result:
+                modul = Modul(self.db, modul_data['modul_id'], modul_data['acronym'], modul_data['title'],
+                              modul_data['exam_format'], modul_data['image_path'], modul_data['status'],
+                              modul_data['student_id'])
+                modul.id = modul_data['id']
+                modul.start_date = modul_data['start_date']
+                modul.end_date = modul_data['end_date']
+                modul.deadline = modul_data['deadline']
+                modul.exam_date = modul_data['exam_date']
+                modul.grade = modul_data['grade']
+                self.modul_list[modul.modul_id] = modul
+        else:
+            self.initialize_moduls()
+            self.save_initial_moduls()
 
     # Berechnet das Abschlussdatum basierend auf das Startdatum und der Studiendauer
     def calc_graduation_date(self):
@@ -159,3 +180,7 @@ class Study:
                       "/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
                       "Dashboard/Images/Data_Science.png", "Offen", self.student_id),
         }
+
+    def save_initial_moduls(self):  # Neue Methode zum Speichern der initialisierten Module in der Datenbank
+        for modul in self.modul_list.values():
+            modul.save()

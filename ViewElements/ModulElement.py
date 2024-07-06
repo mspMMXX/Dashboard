@@ -86,6 +86,8 @@ class ModulElement:
         # Wenn bereits ein Prüfungsdatum gesetzt ist, anzeigen
         if self.modul.exam_date:
             self.exam_date_entry.insert(0, self.modul.exam_date.strftime('%d.%m.%Y %H:%M'))
+        status_dropdown.set(self.modul.status)
+        status_dropdown.bind("<<ComboboxSelected>>", self.update_modul)
 
         self.exam_date_entry.bind("<FocusOut>", self.update_exam_schedule)
 
@@ -164,6 +166,7 @@ class ModulElement:
             self.end_date_lbl.config(text=self.modul.end_date.strftime("%d.%m.%Y %H:%M"))
         else:
             self.end_date_lbl.config(text="")
+            self.modul.save()
 
     def update_grade(self, event):
         exam_grade = self.grade_entry.get()
