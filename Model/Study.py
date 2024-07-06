@@ -3,21 +3,123 @@ from Model.Modul import Modul
 
 
 class Study:
+    """
+    Eine Klasse, die die Informationen eines Studiengangs verwaltet.
+    """
 
-    COURSE_OF_STUDY = "Softwareentwicklung"
+    COURSE_OF_STUDY = "Softwareentwicklung"  # Der Name des Studiengangs
 
     def __init__(self, db, study_duration, study_start_date, student_id):
+        """
+        Initialisiert ein Study-Objekt.
+        Args:
+            db: Die Datenbankverbindung.
+            study_duration: Die Studiendauer in Jahren.
+            study_start_date: Das Datum des Studienbeginns.
+            student_id: Die ID des Studenten.
+        """
         self.db = db
         self.study_duration = study_duration
         self.study_start_date = study_start_date
         self.student_id = student_id
         self.modul_list = {}
-        self.load_moduls_from_db()
-        self.graduation_date = self.calc_graduation_date()
-        self.expected_graduation_date = self.graduation_date
-        self.expected_graduation_date_is_before_graduation_date = True
+        self.load_moduls_from_db()  # Lädt die Module aus der Datenbank
+        self.graduation_date = self.calc_graduation_date()  # Berechnet das Abschlussdatum
+        self.expected_graduation_date = None  # Initialisiert ohne Berechnung
+        self.expected_graduation_date_is_before_graduation_date = None  # Initialisiert ohne Berechnung
+
+    def calc_graduation_date(self):
+        """
+        Berechnet das Abschlussdatum basierend auf dem Startdatum und der Studiendauer.
+        Returns:
+            datetime.date: Das berechnete Abschlussdatum.
+        """
+        if self.study_start_date is None or self.study_duration is None:
+            raise ValueError("study_start_date and study_duration must not be None")
+        return self.study_start_date + dt.timedelta(days=self.study_duration * 365)
+
+    def calc_expected_graduation_date(self):
+        """
+        Berechnet das voraussichtliche Abschlussdatum basierend auf der durchschnittlichen Bearbeitungszeit der Module.
+        Returns:
+            datetime.date: Das berechnete voraussichtliche Abschlussdatum.
+        """
+        sum_modul_time = 0
+        sum_completed_moduls = 0
+        for modul in self.modul_list.values():
+            if modul.status == "Abgeschlossen":
+                if modul.start_date is not None and modul.end_date is not None:
+                    modul_time = (modul.end_date - modul.start_date).days
+                    sum_modul_time += modul_time
+                    sum_completed_moduls += 1
+        if sum_completed_moduls > 0:
+            avg_days_to_complete = (sum_modul_time / sum_completed_moduls) * 36
+            self.expected_graduation_date = self.study_start_date + dt.timedelta(days=avg_days_to_complete)
+        else:
+            self.expected_graduation_date = self.graduation_date
+        return self.expected_graduation_date
+
+    def save(self):
+        """
+        Speichert die Studieninformationen in der Datenbank.
+        Wenn die Studieninformationen bereits existieren, werden sie aktualisiert. Andernfalls wird ein neuer Eintrag
+        erstellt.
+        """
+        query = "SELECT id FROM Study WHERE student_id = %s"
+        params = (self.student_id,)
+        result = self.db.fetch_one(query, params)
+
+        if result:
+            query = """
+            UPDATE Study
+            SET study_duration = %s, study_start_date = %s, expected_graduation_date = %s, expected_graduation_is_
+            before_graduation_date = %s
+            WHERE student_id = %s
+            """
+            params = (self.study_duration, self.study_start_date, self.expected_graduation_date,
+                      self.expected_graduation_date_is_before_graduation_date, self.student_id)
+            self.db.execute_query(query, params)
+        else:
+            query = """
+            INSERT INTO Study (study_duration, study_start_date, expected_graduation_date, expected_graduation_is_
+            before_graduation_date, student_id)
+            VALUES (%s, %s, %s, %s, %s)
+            """
+            params = (self.study_duration, self.study_start_date, self.expected_graduation_date,
+                      self.expected_graduation_date_is_before_graduation_date, self.student_id)
+            self.db.execute_query(query, params)
+
+    def calc_expected_is_before_graduation_date(self):
+        """
+        Bestimmt, ob das voraussichtliche Abschlussdatum vor dem geplanten Abschlussdatum liegt.
+        """
+        if self.graduation_date >= self.expected_graduation_date:
+            self.expected_graduation_date_is_before_graduation_date = True
+        else:
+            self.expected_graduation_date_is_before_graduation_date = False
+
+    def load(self):
+        """
+        Lädt die Studieninformationen aus der Datenbank basierend auf der student_id.
+        """
+        query = "SELECT * FROM Study WHERE student_id = %s"
+        params = (self.student_id,)
+        result = self.db.fetch_one(query, params)
+
+        if result:
+            self.study_duration = result['study_duration']
+            self.study_start_date = result['study_start_date']
+            self.expected_graduation_date = result['expected_graduation_date']
+            self.expected_graduation_date_is_before_graduation_date = result[('expected_graduation_is_before_'
+                                                                              'graduation_date')]
+        else:
+            self.expected_graduation_date = self.calc_expected_graduation_date()
+            self.expected_graduation_date_is_before_graduation_date = self.calc_expected_is_before_graduation_date()
 
     def load_moduls_from_db(self):
+        """
+        Lädt die Module des Studenten aus der Datenbank.
+        """
         query = "SELECT * FROM Modul WHERE student_id = %s"
         params = (self.student_id,)
         result = self.db.fetch_all(query, params)
@@ -38,38 +140,10 @@ class Study:
             self.initialize_moduls()
             self.save_initial_moduls()
 
-    # Berechnet das Abschlussdatum basierend auf das Startdatum und der Studiendauer
-    def calc_graduation_date(self):
-        if self.study_start_date is None or self.study_duration is None:
-            raise ValueError("study_start_date and study_duration must not be None")
-        return self.study_start_date + dt.timedelta(days=self.study_duration * 365)
-
-    # Methode zur Berechnung des voraussichtlichen Abschlussdatums. Basis der durchschnittlichen Bearbeitung der Module
-    def calc_expected_graduation_date(self):
-        sum_modul_time = 0
-        sum_completed_moduls = 0
-        for modul in self.modul_list.values():
-            if modul.status == "Abgeschlossen":
-                if modul.start_date is not None and modul.end_date is not None:
-                    modul_time = (modul.end_date - modul.start_date).days
-                    sum_modul_time += modul_time
-                    sum_completed_moduls += 1
-        if sum_completed_moduls > 0:
-            avg_days_to_complete = (sum_modul_time / sum_completed_moduls) * 36
-            self.expected_graduation_date = self.study_start_date + dt.timedelta(days=avg_days_to_complete)
-        else:
-            self.expected_graduation_date = self.graduation_date
-        return self.expected_graduation_date
-
-    # Berechnet, ob das voraussichtlich errechnete Abschlussdatum vor oder am selben Tag wie das Abschlussdatum ist
-    def calc_expected_is_before_graduation_date(self):
-        if self.graduation_date >= self.expected_graduation_date:
-            self.expected_graduation_date_is_before_graduation_date = True
-        else:
-            self.expected_graduation_date_is_before_graduation_date = False
-
-    # Anlegen aller Module des Studiengangs Softwareentwicklung
     def initialize_moduls(self):
+        """
+        Initialisiert alle Module des Studiengangs Softwareentwicklung.
+        """
         self.modul_list = {
             1: Modul(self.db, 1, "DLBDSIDS01_D", "Einführung in Data Science", "Fachpräsentation",
                      "/Users/msp/Dropbox/07_IU/11_Objektorientierte_Programmierung_Python/02_Portfolio/01_Code/"
@@ -181,6 +255,6 @@ class Study:
                       "Dashboard/Images/Data_Science.png", "Offen", self.student_id),
         }
 
-    def save_initial_moduls(self):  # Neue Methode zum Speichern der initialisierten Module in der Datenbank
+    def save_initial_moduls(self):  # Zum Speichern der initialisierten Module in der Datenbank
         for modul in self.modul_list.values():
             modul.save()
